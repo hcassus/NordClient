@@ -1,0 +1,14 @@
+  definition_dir=/opt/nordclient/vpndef
+  definition_file=$definition_dir/definitions.zip
+
+  rm -rf $definition_dir\_bkp
+  mv $definition_dir $definition_dir\_bkp
+  mkdir $definition_dir
+
+  wget https://nordvpn.com/api/files/zip -O $definition_file
+  
+  unzip $definition_file -d $definition_dir
+  
+  find /opt/nordclient/vpndef -type f -exec sed -i 's/auth-user-pass/auth-user-pass \/opt\/nordclient\/auth\/auth/g' {} \;
+ 
+  rm $definition_file

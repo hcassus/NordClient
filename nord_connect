@@ -1,0 +1,57 @@
+default_protocol=udp
+
+country=$1
+protocol=$2
+
+createKillSwitch() {
+  quick_ip=$(dig +short $(echo $1 | awk -F "." '{print $1"."$2"."$3}'))
+  echo Creating killswitch excluding $quick_ip
+  /opt/nordclient/killswitch $quick_ip &> /dev/null
+}
+
+connectToDef() {
+  definition_file=$(echo $1 | awk -F "/" '{print $NF}')
+  echo Connecting to $definition_file
+  nohup sudo openvpn $1 &> /opt/nordclient/conn.log &
+  createKillSwitch $definition_file 
+}
+
+firstServerConnect () { 
+  vpn_definition=$(ls /opt/nordclient/vpndef/*$1*$2* | head -1)
+  echo WARNING: Unable to connect through quick connect 
+  if [ -z $vpn_definition ]
+    then echo Definition not found for $1 $2 >&2
+    exit 1
+  else
+    connectToDef $vpn_definition    
+  fi
+}
+
+quickConnect () {
+  echo Quick connect successful
+  vpn_definition=$(ls /opt/nordclient/vpndef/$1*$2* | head -1)
+  connectToDef $vpn_definition  
+}
+
+resolveQuickServer(){
+country=$1
+country_upper=$(echo $country | awk '{ print toupper($0) }')
+country_filter=".[] | select(.code == \"$country_upper\") | .id"
+country_id=$(curl -m 5 -s https://nordvpn.com/wp-admin/admin-ajax.php?action=servers_countries | jq -r "$country_filter")
+url_curl="https://nordvpn.com/wp-admin/admin-ajax.php?action=servers_recommendations&filters=\{%22country_id%22:$country_id\}"
+quick_def=$(curl -m 5 -s $url_curl | jq -r ".[0].hostname")
+echo $quick_def
+}
+
+if [ -z $protocol ]
+    then protocol=$default_protocol
+fi
+
+quick_server=$(resolveQuickServer $country)
+
+if [ -z $quick_server ]
+  then firstServerConnect $country $protocol
+else 
+  quickConnect $quick_server $protocol;
+fi
+

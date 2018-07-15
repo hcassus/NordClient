@@ -1,0 +1,9 @@
+connection_definition=$(sudo ps ax | grep nordvpn | grep sudo | awk -F "/" '{print $NF}')
+if [ -z $connection_definition ]
+  then echo NordVPN disconnected
+else
+  echo Connected using $connection_definition
+fi
+
+echo
+sudo ufw show added

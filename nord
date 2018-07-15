@@ -1,0 +1,13 @@
+if [ -z $1 ]
+  then echo Inform \"update\" to prepare the latest definitions for nordvpn or \"connect\" to connect to the recommended server
+  exit 1
+fi
+
+case "$1" in
+  update) /opt/nordclient/nord_update &> /dev/null;;
+  connect) /opt/nordclient/nord_connect $2 $3;;
+  disconnect) /opt/nordclient/nord_disconnect;;
+  reconnect) /opt/nordclient/nord_disconnect && /opt/nordclient/nord_connect $2 $3;;
+  status) /opt/nordclient/nord_status;;
+  *) echo Invalid argument >&2; exit 1;;
+esac

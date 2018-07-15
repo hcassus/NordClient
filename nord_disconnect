@@ -1,0 +1,2 @@
+sudo killall openvpn
+/opt/nordclient/restore_connection &> /dev/null
