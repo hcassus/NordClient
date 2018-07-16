@@ -4,16 +4,16 @@ country=$1
 protocol=$2
 
 createKillSwitch() {
-  quick_ip=$(dig +short $(echo $1 | awk -F "." '{print $1"."$2"."$3}'))
-  echo Creating killswitch excluding $quick_ip
-  /opt/nordclient/killswitch $quick_ip &> /dev/null
+  echo Creating killswitch excluding $1
+  /opt/nordclient/killswitch $1 &> /dev/null
 }
 
 connectToDef() {
+  definition_ip=$(grep "remote " $1 | awk '{print $2}')
   definition_file=$(echo $1 | awk -F "/" '{print $NF}')
+  createKillSwitch $definition_ip 
   echo Connecting to $definition_file
   nohup sudo openvpn $1 &> /opt/nordclient/conn.log &
-  createKillSwitch $definition_file 
 }
 
 firstServerConnect () { 
