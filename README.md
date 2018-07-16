@@ -34,4 +34,4 @@ nord disconnect - Kills all openvpn client and restore connectivity out of the t
 
 nord status - Shows what definition is used to connect and the firewall rules in place
 
-nord reconnect - disconnects, opens the traffic, connects again and closes the traffic.
+nord reconnect - tries to reconnect to the current active connection. This is useful due to the many reports of the inability to reconnect automatically from OpenVPN, while keeping the traffic shut to avoid leaking requests.
