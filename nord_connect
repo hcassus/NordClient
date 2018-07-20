@@ -4,7 +4,11 @@ country=$1
 protocol=$2
 
 createKillSwitch() {
-  echo Creating killswitch excluding $1
+  if [ ! -z $1 ]
+    then echo Creating killswitch excluding $1
+  else
+    echo Creating killswitch without exclusions
+  fi
   /opt/nordclient/killswitch $1 &> /dev/null
 }
 
@@ -14,6 +18,12 @@ connectToDef() {
   createKillSwitch $definition_ip 
   echo Connecting to $definition_file
   nohup sudo openvpn $1 &> /opt/nordclient/conn.log &
+  
+  while [ -z $(curl -m 10 -s icanhazip.com) ]
+    do sleep 1
+  done
+  
+  createKillSwitch
 }
 
 firstServerConnect () { 
@@ -34,6 +44,7 @@ quickConnect () {
 }
 
 resolveQuickServer(){
+/opt/nordclient/fw_quick_connect &> /dev/null
 country=$1
 country_upper=$(echo $country | awk '{ print toupper($0) }')
 country_filter=".[] | select(.code == \"$country_upper\") | .id"
