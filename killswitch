@@ -6,5 +6,6 @@ if [ ! -z $1 ]
   then echo Adding current connection as exception for reconnection: $1
   sudo ufw allow out from any to $1  
 fi
+sudo ufw allow out from any to $(ip r | grep default | awk '{print $3}')
 sudo ufw allow out on tun0 from any to any 
 sudo ufw enable
