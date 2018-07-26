@@ -1,7 +1,6 @@
-sudo ufw --force reset 
+/opt/nordclient/clean_rules
 sudo ufw default deny incoming
 sudo ufw default deny outgoing 
-sudo ufw allow out 53/udp 
 sudo ufw allow out from any to 104.20.16.34 
 sudo ufw allow out from any to 104.20.17.34
 sudo ufw allow out on tun0 from any to any 

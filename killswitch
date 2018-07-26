@@ -1,7 +1,6 @@
-sudo ufw --force reset 
+/opt/nordclient/clean_rules
 sudo ufw default deny incoming
 sudo ufw default deny outgoing 
-#sudo ufw allow out 53/udp # uncomment this line if your DNS requests are handled outside the tunnel, which might lead to a DNS Leak
 if [ ! -z $1 ]
   then echo Adding current connection as exception for reconnection: $1
   sudo ufw allow out from any to $1  

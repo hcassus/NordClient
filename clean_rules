@@ -1,0 +1,5 @@
+exitCode=0
+while [ $exitCode -eq 0 ]
+ do sudo ufw --force delete 1
+ exitCode=$?
+done
