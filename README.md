@@ -25,14 +25,20 @@ The possible commands are:
 
 nord update - Downloads the definitions and enables them to be authenticated by the auth file
 
+
 nord connect - Connects to the fastest server it can find. If it can't find, it'll grab the first one it finds (most likely in Albania)
+
 
 nord connect <country_code> - Connects to the fastest server it can find, or the first one for that country.
 
+
 nord connect <country_code> <tcp|udp>- Connects to the fastest server it can find, or the first one for that country and protocol.
+
 
 nord disconnect - Kills all openvpn client and restore connectivity out of the tunnel
 
+
 nord status - Shows what definition is used to connect and the firewall rules in place
+
 
 nord reconnect - tries to reconnect to the current active connection. This is useful due to the many reports of the inability to reconnect automatically from OpenVPN, while keeping the traffic shut to avoid leaking requests.
