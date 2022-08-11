@@ -13,6 +13,7 @@ UFW
 
 OpenVPN
 
+
 # Executing
 Although it sucks big time, by now the client has to be run from /opt/nordclient, and I suggest adding the folder to your PATH. So it becomes easier to use it.
 
